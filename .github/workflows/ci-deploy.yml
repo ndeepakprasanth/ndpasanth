@@ -18,6 +18,7 @@ env:
 jobs:
   deploy-dev:
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
     environment: dev
     steps:
       - name: Checkout code
@@ -48,6 +49,7 @@ jobs:
 
   deploy-test:
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
     needs: deploy-dev
     environment: test
     steps:
@@ -56,6 +58,7 @@ jobs:
 
   deploy-qa:
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
     needs: deploy-test
     environment: qa
     steps:
@@ -64,6 +67,7 @@ jobs:
 
   deploy-preprod:
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
     needs: deploy-qa
     environment: preprod
     steps:
@@ -72,6 +76,7 @@ jobs:
 
   deploy-prod:
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
     needs: deploy-preprod
     environment: prod
     steps:
