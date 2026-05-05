@@ -46,6 +46,7 @@ jobs:
         run: |
           aws s3 sync site/ s3://${{ env.BUCKET_NAME }} --delete --region ${{ env.AWS_REGION }}
 
+#test direct push protection
   deploy-test:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request'
