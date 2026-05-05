@@ -3,14 +3,15 @@ name: CI/CD Pipeline for Static Site
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
-  id-token: write    # required for OIDC to assume AWS role
-  contents: read     # required by actions/checkout
+  id-token: write
+  contents: read
 
 env:
-  BUCKET_NAME: ai-static-site-2025-dpn  # (optional) can be moved to repo variables
-  AWS_REGION: us-east-1                 # (optional) can be moved to repo variables
+  BUCKET_NAME: ai-static-site-2025-dpn
+  AWS_REGION: us-east-1
 
 jobs:
   deploy:
@@ -29,13 +30,17 @@ jobs:
           fi
           echo "Site files verified successfully"
 
+      - name: Simulate deployment (learning mode)
+        run: echo "Simulated deploy to ${{ job.environment.name }}"
+
       - name: Configure AWS credentials
+        if: false
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::946248011760:role/GitHubS3DemoRole
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Deploy to S3
+        if: false
         run: |
           aws s3 sync site/ s3://${{ env.BUCKET_NAME }} --delete --region ${{ env.AWS_REGION }}
-
